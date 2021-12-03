@@ -12,8 +12,7 @@
     "lint:prettier": "prettier --check .",
     "fix": "run-s -l -c fix:eslint fix:prettier",
     "fix:eslint": "yarn lint:eslint --fix",
-    "fix:prettier": "yarn lint:prettier --write",
-    "prepare": "husky install"
+    "fix:prettier": "yarn lint:prettier --write"
   },
   "postcss": {
     "plugins": {
