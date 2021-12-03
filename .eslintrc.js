@@ -3,6 +3,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.json",
+    extraFileExtensions: [".mjs"],
   },
   env: {
     es2021: true,
@@ -10,11 +11,13 @@ module.exports = {
     jest: true,
     node: true,
   },
-  plugins: ["simple-import-sort"],
+  settings: { tailwindcss: { groupByResponsive: true } },
+  plugins: ["simple-import-sort", "tailwindcss"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:tailwindcss/recommended",
     "next",
     "next/core-web-vitals",
     "prettier",
