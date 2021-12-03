@@ -1,15 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Layout } from "src/layout/Layout";
+import { Layout } from "src/components/layouts/Layout";
 
 const Home: NextPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Home</title>
+        <title>Insta</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h2>Home</h2>
+      <h1>This is the Insta</h1>
+      {/* Feed */}
+      {/* Modal */}
     </Layout>
   );
 };
