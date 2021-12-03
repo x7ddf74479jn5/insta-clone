@@ -17,7 +17,6 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "next",
     "next/core-web-vitals",
-    "plugin:storybook/recommended",
     "prettier",
   ],
   rules: {
