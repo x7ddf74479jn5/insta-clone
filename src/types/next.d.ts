@@ -1,14 +1,15 @@
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+type PageAttributes = { getLayout?: (page: ReactElement) => ReactNode };
+
+declare module "next" {
+  type CustomLayout = PageAttributes["getLayout"];
+  type CustomNextPage<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & PageAttributes;
+}
 
 declare module "next/app" {
-  type NextPageWithLayout = NextPage & {
-    getLayout?: (page: ReactElement) => ReactNode;
-  };
-
-  type AppPropsWithLayout = AppProps & {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    Component: NextPageWithLayout;
-  };
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  type CustomAppProps<P = Record<string, unknown>> = AppProps<P> & { Component: NextPage & PageAttributes };
 }

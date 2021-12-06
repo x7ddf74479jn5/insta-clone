@@ -1,8 +1,7 @@
-import type { NextPage } from "next";
 import Head from "next/head";
-import { Layout } from "src/components/layouts/Layout";
+import { Layout } from "src/components/layout/Layout";
 
-const Home: NextPage = () => {
+export const Home: React.VFC = () => {
   return (
     <Layout>
       <Head>
@@ -15,5 +14,3 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
-
-export default Home;
