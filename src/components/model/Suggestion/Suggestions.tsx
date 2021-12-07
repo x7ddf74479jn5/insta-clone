@@ -1,4 +1,4 @@
-import { useSuggestions } from "../../hooks/useSuggestions";
+import { useSuggestions } from "src/hooks/useSuggestions";
 
 export const Suggestions = () => {
   const [suggestions] = useSuggestions(5);

@@ -1,4 +1,4 @@
-import { useSuggestions } from "src/components/hooks/useSuggestions";
+import { useSuggestions } from "src/hooks/useSuggestions";
 
 import { Story } from "./Story";
 
