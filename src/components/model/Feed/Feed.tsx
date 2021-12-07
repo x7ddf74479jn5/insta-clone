@@ -1,4 +1,5 @@
-import { Stories } from "src/components/model/Story/Stories";
+import { Posts } from "src/components/model/Post";
+import { Stories } from "src/components/model/Story";
 
 export const Feed = () => {
   return (
@@ -6,7 +7,7 @@ export const Feed = () => {
       {/* Section */}
       <section className="col-span-2">
         <Stories />
-        {/* Posts */}
+        <Posts />
       </section>
 
       {/* Section */}
