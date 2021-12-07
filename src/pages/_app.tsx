@@ -1,8 +1,8 @@
 import "src/styles/global.css";
 
-import type { AppPropsWithLayout } from "next/app";
+import type { CustomAppProps } from "next/app";
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps }: CustomAppProps) => {
   const getLayout =
     Component.getLayout ??
     ((page) => {

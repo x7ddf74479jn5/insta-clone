@@ -1,6 +1,6 @@
 import type { CustomNextPage } from "next";
-import { Layout } from "src/components/layout/Layout";
 import { Home } from "src/components/page/Index";
+import { Layout } from "src/components/ui/layout/Layout";
 
 const IndexPage: CustomNextPage = () => {
   return <Home />;
