@@ -12,7 +12,7 @@ import type { VFC } from "react";
 
 export const Header: VFC = () => {
   return (
-    <header className="shadow-sm">
+    <header className="bg-white shadow-sm">
       <div className="flex justify-between mx-5 max-w-6xl xl:mx-auto">
         {/* Left */}
         <div className="hidden relative w-24 h-24 cursor-pointer lg:inline-grid">
