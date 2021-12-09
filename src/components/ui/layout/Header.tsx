@@ -8,9 +8,14 @@ import {
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import Image from "next/image";
+import { signIn, signOut, useSession } from "next-auth/react";
 import type { VFC } from "react";
 
 export const Header: VFC = () => {
+  const { data: session } = useSession();
+  const handleSignIn = () => signIn();
+  const handleSignOut = () => signOut();
+
   return (
     <header className="bg-white shadow-sm">
       <div className="flex justify-between mx-5 max-w-6xl xl:mx-auto">
@@ -38,17 +43,29 @@ export const Header: VFC = () => {
         <div className="flex justify-end items-center space-x-4">
           <HomeIcon className="navBtn" />
           <MenuIcon className="h-6 cursor-pointer md:hidden" />
-          <div className="relative navBtn">
-            <PaperAirplaneIcon className="rotate-45 navBtn" />
-            <div className="flex absolute -top-1 -right-2 justify-center items-center w-5 h-5 text-xs text-white bg-red-500 rounded-full animate-pulse">
-              3
-            </div>
-          </div>
-          <PlusCircleIcon className="navBtn" />
-          <UserGroupIcon className="navBtn" />
-          <HeartIcon className="navBtn" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/pandashark_icon.webp" alt="profile pic" className="h-10 rounded-full cursor-pointer" />
+          {session ? (
+            <>
+              <div className="relative navBtn">
+                <PaperAirplaneIcon className="rotate-45 navBtn" />
+                <div className="flex absolute -top-1 -right-2 justify-center items-center w-5 h-5 text-xs text-white bg-red-500 rounded-full animate-pulse">
+                  3
+                </div>
+              </div>
+              <PlusCircleIcon className="navBtn" />
+              <UserGroupIcon className="navBtn" />
+              <HeartIcon className="navBtn" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <button onClick={handleSignOut}>
+                <img
+                  src={session.user?.image ?? "/images/pandashark_icon.webp"}
+                  alt="profile pic"
+                  className="object-cover w-10 h-10 rounded-full cursor-pointer"
+                />
+              </button>
+            </>
+          ) : (
+            <button onClick={handleSignIn}>Sign In</button>
+          )}
         </div>
       </div>
     </header>
