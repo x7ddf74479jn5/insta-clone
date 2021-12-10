@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import type { VFC } from "react";
 
@@ -15,16 +16,22 @@ export const Header: VFC = () => {
   const { data: session } = useSession();
   const handleSignIn = () => signIn();
   const handleSignOut = () => signOut();
+  const router = useRouter();
+  const handlePushRoute = () => router.push("/");
 
   return (
     <header className="bg-white shadow-sm">
       <div className="flex justify-between mx-5 max-w-6xl xl:mx-auto">
         {/* Left */}
         <div className="hidden relative w-24 h-24 cursor-pointer lg:inline-grid">
-          <Image src="/images/2880px-Instagram_logo.png" layout="fill" objectFit="contain" alt="insta logo" />
+          <button onClick={handlePushRoute}>
+            <Image src="/images/2880px-Instagram_logo.png" layout="fill" objectFit="contain" alt="insta logo" />
+          </button>
         </div>
         <div className="relative flex-shrink-0 w-10 cursor-pointer lg:hidden">
-          <Image src="/images/insta-logo.png" layout="fill" objectFit="contain" alt="insta logo" />
+          <button onClick={handlePushRoute}>
+            <Image src="/images/insta-logo.png" layout="fill" objectFit="contain" alt="insta logo" />
+          </button>
         </div>
         {/* Middle */}
         <div className="sticky top-0 z-50 max-w-xs bg-white border-b">
@@ -41,7 +48,7 @@ export const Header: VFC = () => {
         </div>
         {/* Right */}
         <div className="flex justify-end items-center space-x-4">
-          <HomeIcon className="navBtn" />
+          <HomeIcon onClick={handlePushRoute} className="navBtn" />
           <MenuIcon className="h-6 cursor-pointer md:hidden" />
           {session ? (
             <>
