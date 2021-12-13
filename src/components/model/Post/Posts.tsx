@@ -9,7 +9,7 @@ const posts = [
     caption: "SUBSCRIBE AND DESTROY",
   },
   {
-    id: "123",
+    id: "456",
     username: "username",
     userImg: "/images/pandashark_icon.webp",
     img: "/images/pandashark_icon.webp",
