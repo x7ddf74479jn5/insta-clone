@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import type { VFC } from "react";
+import { useModalState } from "src/atoms/modelAtom";
 
 export const Header: VFC = () => {
   const { data: session } = useSession();
@@ -18,9 +19,12 @@ export const Header: VFC = () => {
   const handleSignOut = () => signOut();
   const router = useRouter();
   const handlePushRoute = () => router.push("/");
+  const [_, setIsOpen] = useModalState();
+
+  const handleOpenModal = () => setIsOpen(true);
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="relative z-50 bg-white shadow-sm">
       <div className="flex justify-between mx-5 max-w-6xl xl:mx-auto">
         {/* Left */}
         <div className="hidden relative w-24 h-24 cursor-pointer lg:inline-grid">
@@ -58,7 +62,7 @@ export const Header: VFC = () => {
                   3
                 </div>
               </div>
-              <PlusCircleIcon className="navBtn" />
+              <PlusCircleIcon onClick={handleOpenModal} className="navBtn" />
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
