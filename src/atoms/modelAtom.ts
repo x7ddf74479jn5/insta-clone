@@ -1,6 +1,8 @@
-import { atom } from "recoil";
+import { atom, useRecoilState } from "recoil";
 
-export const modalState = atom({
+const modalState = atom({
   key: "modalState",
   default: false,
 });
+
+export const useModalState = () => useRecoilState(modalState);
