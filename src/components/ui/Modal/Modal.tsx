@@ -1,16 +1,52 @@
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from "@firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import { Dialog, Transition } from "@headlessui/react";
 import { CameraIcon } from "@heroicons/react/outline";
-import React, { Fragment, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+import { Fragment, useRef, useState } from "react";
 import { useModalState } from "src/atoms/modelAtom";
+import { db, storage } from "src/lib/firebase";
 
 export const Modal = () => {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useModalState();
   const handleOpenModal = () => setIsOpen(false);
-  const filePickerRef = useRef<HTMLInputElement | null>(null);
+  const filePickerRef = useRef<HTMLInputElement>(null);
+  const captionRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+
   const handleFilePicker = () => {
     filePickerRef.current && filePickerRef.current.click();
   };
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+
+  const handleUploadPost = async () => {
+    if (isLoading || !selectedFile) return;
+
+    setIsLoading(true);
+
+    const docRef = await addDoc(collection(db, "posts"), {
+      username: session?.user.username,
+      caption: captionRef?.current?.value,
+      profileImg: session?.user.image,
+      timestamp: serverTimestamp(),
+    });
+
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    await uploadString(imageRef, selectedFile, "data_url").then(async (_snapshot) => {
+      const downloadURL = await getDownloadURL(imageRef);
+
+      await updateDoc(doc(db, "posts", docRef.id), {
+        image: downloadURL,
+      });
+    });
+
+    setIsOpen(false);
+    setIsLoading(false);
+    setSelectedFile(null);
+  };
+
   const handleAddImageToPost: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!e.target.files) return;
 
@@ -26,7 +62,9 @@ export const Modal = () => {
       }
     };
   };
+
   const handleResetImage = () => setSelectedFile(null);
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as="div" className="overflow-y-auto fixed inset-0 z-10" onClose={handleOpenModal}>
@@ -82,7 +120,7 @@ export const Modal = () => {
                     <input
                       className="w-full text-center border-none focus:ring-0"
                       type="text"
-                      // ref=
+                      ref={captionRef}
                       placeholder="Please enter a caption..."
                     />
                   </div>
@@ -90,11 +128,11 @@ export const Modal = () => {
                 <div className="mt-5 sm:mt-6">
                   <button
                     type="button"
-                    // disable={!selectedFile}
-
+                    disabled={!selectedFile}
+                    onClick={handleUploadPost}
                     className="inline-flex justify-center py-2 px-4 w-full text-base font-medium text-white disabled:text-gray-300 bg-red-600 hover:bg-red-700 hover:disabled:bg-gray-300 rounded-md border border-transparent focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-sm disabled:cursor-not-allowed focus:outline-none sm:text-sm"
                   >
-                    Upload Post
+                    {isLoading ? "Uploading..." : "Upload Post"}
                   </button>
                 </div>
               </div>
