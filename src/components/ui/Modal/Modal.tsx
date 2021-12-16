@@ -1,11 +1,11 @@
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from "@firebase/firestore";
+import { addDoc, doc, serverTimestamp, updateDoc } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "@firebase/storage";
 import { Dialog, Transition } from "@headlessui/react";
 import { CameraIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 import { Fragment, useRef, useState } from "react";
 import { useModalState } from "src/atoms/modelAtom";
-import { db, storage } from "src/lib/firebase";
+import { db, firestore, storage } from "src/lib/firebase";
 
 export const Modal = () => {
   const { data: session } = useSession();
@@ -21,12 +21,13 @@ export const Modal = () => {
   };
 
   const handleUploadPost = async () => {
-    if (isLoading || !selectedFile) return;
+    if (isLoading || !selectedFile || !session?.user.username || !captionRef?.current?.value || !session?.user.image)
+      return;
 
     setIsLoading(true);
 
-    const docRef = await addDoc(collection(db, "posts"), {
-      username: session?.user.username,
+    const docRef = await addDoc(db.posts, {
+      username: session?.user?.username,
       caption: captionRef?.current?.value,
       profileImg: session?.user.image,
       timestamp: serverTimestamp(),
@@ -37,7 +38,7 @@ export const Modal = () => {
     await uploadString(imageRef, selectedFile, "data_url").then(async (_snapshot) => {
       const downloadURL = await getDownloadURL(imageRef);
 
-      await updateDoc(doc(db, "posts", docRef.id), {
+      await updateDoc(doc(firestore, "posts", docRef.id), {
         image: downloadURL,
       });
     });
