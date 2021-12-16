@@ -65,8 +65,8 @@ export const Header: VFC = () => {
               <PlusCircleIcon onClick={handleOpenModal} className="navBtn" />
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <button onClick={handleSignOut}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={session.user?.image ?? "/images/pandashark_icon.webp"}
                   alt="profile pic"
