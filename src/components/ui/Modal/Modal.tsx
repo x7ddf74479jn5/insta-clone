@@ -26,10 +26,10 @@ export const Modal = () => {
 
     setIsLoading(true);
 
-    const docRef = await addDoc(db.posts, {
+    const docRef = await addDoc(db.posts(), {
       username: session?.user?.username,
       caption: captionRef?.current?.value,
-      profileImg: session?.user.image,
+      userImg: session?.user.image,
       timestamp: serverTimestamp(),
     });
 
