@@ -8,7 +8,7 @@ import { assertComment, assertLike, assertPost } from "src/types";
 const converter = <T extends object>(validator: (data: unknown) => asserts data is T): FirestoreDataConverter<T> => ({
   toFirestore: (data: WithFieldValue<T>) => data,
   fromFirestore: (snapshot: QueryDocumentSnapshot) => {
-    const data = snapshot.data();
+    const data = snapshot.data({ serverTimestamps: "estimate" });
 
     const result = Object.fromEntries(
       Object.entries(data).map(([key, value]) => {
