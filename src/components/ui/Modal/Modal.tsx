@@ -5,7 +5,8 @@ import { CameraIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 import { Fragment, useRef, useState } from "react";
 import { useModalState } from "src/atoms/modelAtom";
-import { db, firestore, storage } from "src/lib/firebase";
+import { firestore, storage } from "src/lib/firebase";
+import { db } from "src/repository";
 
 export const Modal = () => {
   const { data: session } = useSession();
