@@ -1,4 +1,5 @@
-import { atom, useRecoilCallback, useRecoilValue } from "recoil";
+import { useCallback } from "react";
+import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
 const modalState = atom({
   key: "modalState",
@@ -8,17 +9,15 @@ const modalState = atom({
 export const useModalState = () => useRecoilValue(modalState);
 
 export const useModalMutators = () => {
-  const openModal = useRecoilCallback(
-    ({ set }) =>
-      () =>
-        set(modalState, () => true)
-  );
+  const setModalState = useSetRecoilState(modalState);
 
-  const closeModal = useRecoilCallback(
-    ({ set }) =>
-      () =>
-        set(modalState, () => false)
-  );
+  const openModal = useCallback(() => {
+    setModalState(true);
+  }, [setModalState]);
+
+  const closeModal = useCallback(() => {
+    setModalState(false);
+  }, [setModalState]);
 
   return { openModal, closeModal };
 };
