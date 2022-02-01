@@ -4,14 +4,15 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CameraIcon } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
 import { Fragment, useRef, useState } from "react";
-import { useModalState } from "src/atoms/modelAtom";
+import { useModalMutators, useModalState } from "src/atoms/modelAtom";
 import { firestore, storage } from "src/lib/firebase";
 import { db } from "src/repository";
 
 export const Modal = () => {
   const { data: session } = useSession();
-  const [isOpen, setIsOpen] = useModalState();
-  const handleOpenModal = () => setIsOpen(false);
+  const isOpen = useModalState();
+  const { openModal, closeModal } = useModalMutators();
+  const handleOpenModal = () => openModal();
   const filePickerRef = useRef<HTMLInputElement>(null);
   const captionRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +45,7 @@ export const Modal = () => {
       });
     });
 
-    setIsOpen(false);
+    closeModal();
     setIsLoading(false);
     setSelectedFile(null);
   };

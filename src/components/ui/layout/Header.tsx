@@ -11,7 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import type { VFC } from "react";
-import { useModalState } from "src/atoms/modelAtom";
+import { useModalMutators } from "src/atoms/modelAtom";
 
 export const Header: VFC = () => {
   const { data: session } = useSession();
@@ -19,9 +19,9 @@ export const Header: VFC = () => {
   const handleSignOut = () => signOut();
   const router = useRouter();
   const handlePushRoute = () => router.push("/");
-  const [_, setIsOpen] = useModalState();
+  const { openModal } = useModalMutators();
 
-  const handleOpenModal = () => setIsOpen(true);
+  const handleOpenModal = () => openModal();
 
   return (
     <header className="relative z-50 bg-white shadow-sm">
